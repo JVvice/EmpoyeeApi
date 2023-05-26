@@ -1,7 +1,29 @@
+using EmpoyeeApi.Data;
+using EmpoyeeApi.Models;
+using EmpoyeeApi.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
+//Access configuraiton settings
+var configuration = builder.Configuration;
+
+//Retrieve Connection String from appsettings.json
+var connectionString = configuration.GetConnectionString("DBConnectionString");
+
+//Register DbContext
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
+
+//Register repoitories
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
 var app = builder.Build();
 
