@@ -1,6 +1,6 @@
 using EmpoyeeApi.Data;
 using EmpoyeeApi.Models;
-using EmpoyeeApi.Repositories;
+using EmpoyeeApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -22,8 +22,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
-//Register repoitories
-builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+//Register Services
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
 var app = builder.Build();
 

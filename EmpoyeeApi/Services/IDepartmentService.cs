@@ -3,11 +3,13 @@ using System.Threading.Tasks;
 using EmpoyeeApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EmpoyeeApi.Repositories
+namespace EmpoyeeApi.Services
 {
-    public interface IDepartmentRepository
+    public interface IDepartmentService
     {
         Task<IEnumerable<Department>> GetDepartmentsAsync();
+        Task<Department>GetDepartmentAsync(int id);
         Task<Department> AddDepartmentAsync(Department department);
+        
     }
 }

@@ -1,5 +1,5 @@
 ﻿using EmpoyeeApi.Models;
-using EmpoyeeApi.Repositories;
+using EmpoyeeApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmpoyeeApi.Controllers
@@ -7,27 +7,51 @@ namespace EmpoyeeApi.Controllers
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IDepartmentService _departmentService;
 
-        public DepartmentController(IDepartmentRepository departmentRepository)
+        public DepartmentController(IDepartmentService departmentService)
         {
-            _departmentRepository = departmentRepository;
+            _departmentService = departmentService;
         }
 
         [HttpGet]
         [Route("api/departments")]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
-            var departments = await _departmentRepository.GetDepartmentsAsync();
+            var departments = await _departmentService.GetDepartmentsAsync();
             return Ok(departments);
+        }
+
+        [HttpGet("{id:Guid}", Name = "GetDepartment")]
+        [Route("api/department/{id}")]
+        public async Task<ActionResult<Department>> GetDepartment(int id)
+        {
+            if(id == 0)
+            {
+                return BadRequest();
+            }
+
+            var department = await _departmentService.GetDepartmentAsync(id);
+
+            if(department == null) { return NotFound(); }
+            return Ok(department);
         }
 
         [HttpPost]
         [Route("api/departments")]
         public async Task<ActionResult<Department>> AddDeparment([FromBody]Department department)
         {
-            await _departmentRepository.AddDepartmentAsync(department);
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if(department == null)
+            {
+                return BadRequest(department);
+            }
+
+            await _departmentService.AddDepartmentAsync(department);
+            return Ok(department);
 
         }
     }

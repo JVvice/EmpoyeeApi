@@ -1,15 +1,15 @@
 ﻿using EmpoyeeApi.Models;
-using EmpoyeeApi.Repositories;
+using EmpoyeeApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmpoyeeApi.Data
 {
-    public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentService : IDepartmentService
     {
         private readonly AppDbContext _context;
 
-        public DepartmentRepository(AppDbContext context)
+        public DepartmentService(AppDbContext context)
         {
             _context = context;
         }
@@ -25,6 +25,14 @@ namespace EmpoyeeApi.Data
             _context.SaveChanges();
             return department;
 
+        }
+
+        public async Task<Department> GetDepartmentAsync(int id)
+        {
+            var department = await _context.Departments.FirstOrDefaultAsync(x => x.DepartmentId == id);
+#pragma warning disable CS8603 // Possible null reference return.
+            return department;
+#pragma warning restore CS8603 // Possible null reference return.
         }
     }
 }
