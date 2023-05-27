@@ -54,6 +54,24 @@ namespace EmpoyeeApi.Controllers
             return Ok(department);
 
         }
+
+        [HttpDelete]
+        [Route("api/department/{id}")]
+        public async Task<ActionResult> DeleteDepartment(int id)
+        {
+            if(id == 0)
+            {
+                return BadRequest();
+            }
+            var department = await _departmentService.DeleteDepartmentAsync(id);
+
+            if(department == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
     }
 
 }

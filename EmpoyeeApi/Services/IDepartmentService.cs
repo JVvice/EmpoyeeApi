@@ -10,6 +10,7 @@ namespace EmpoyeeApi.Services
         Task<IEnumerable<Department>> GetDepartmentsAsync();
         Task<Department>GetDepartmentAsync(int id);
         Task<Department> AddDepartmentAsync(Department department);
+        Task<Department> DeleteDepartmentAsync(int id);
         
     }
 }

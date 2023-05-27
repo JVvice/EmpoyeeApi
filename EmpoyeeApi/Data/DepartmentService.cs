@@ -34,5 +34,18 @@ namespace EmpoyeeApi.Data
             return department;
 #pragma warning restore CS8603 // Possible null reference return.
         }
+
+        public async Task<Department> DeleteDepartmentAsync(int id)
+        {
+            var department = await _context.Departments.FirstOrDefaultAsync(x => x.DepartmentId == id);
+#pragma warning disable CS8603 // Possible null reference return.
+            if (department == null) return null;
+#pragma warning restore CS8603 // Possible null reference return.
+
+            _context.Departments.Remove(department);
+            _context.SaveChanges(); return department;
+
+
+        }
     }
 }
