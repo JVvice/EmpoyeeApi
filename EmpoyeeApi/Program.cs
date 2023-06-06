@@ -1,4 +1,5 @@
 using EmpoyeeApi.Data;
+using EmpoyeeApi.Interfaces;
 using EmpoyeeApi.Models;
 using EmpoyeeApi.Services;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //Register Services
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 var app = builder.Build();
 

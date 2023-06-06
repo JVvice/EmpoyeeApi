@@ -1,9 +1,10 @@
-﻿using EmpoyeeApi.Models;
-using EmpoyeeApi.Services;
+﻿using EmpoyeeApi.Data;
+using EmpoyeeApi.Interfaces;
+using EmpoyeeApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmpoyeeApi.Data
+namespace EmpoyeeApi.Services
 {
     public class DepartmentService : IDepartmentService
     {
@@ -14,7 +15,7 @@ namespace EmpoyeeApi.Data
             _context = context;
         }
 
-        public async Task<IEnumerable<Department>> GetDepartmentsAsync()
+        public async Task<List<Department>> GetDepartmentsAsync()
         {
             return await _context.Departments.ToListAsync();
         }

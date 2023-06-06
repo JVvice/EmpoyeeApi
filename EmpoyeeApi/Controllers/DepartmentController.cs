@@ -1,5 +1,5 @@
-﻿using EmpoyeeApi.Models;
-using EmpoyeeApi.Services;
+﻿using EmpoyeeApi.Interfaces;
+using EmpoyeeApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmpoyeeApi.Controllers
