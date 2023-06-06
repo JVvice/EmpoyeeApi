@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmpoyeeApi.Controllers
 {
+    [Route("api/department")]
     [ApiController]
     public class DepartmentController : ControllerBase
     {
@@ -15,30 +16,27 @@ namespace EmpoyeeApi.Controllers
         }
 
         [HttpGet]
-        [Route("api/departments")]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
             var departments = await _departmentService.GetDepartmentsAsync();
             return Ok(departments);
         }
 
-        [HttpGet("{id:Guid}", Name = "GetDepartment")]
-        [Route("api/department/{id}")]
+        [HttpGet("{id:Int}", Name = "GetDepartment")]
         public async Task<ActionResult<Department>> GetDepartment(int id)
         {
-            if(id == 0)
+            if (id == 0)
             {
                 return BadRequest();
             }
 
             var department = await _departmentService.GetDepartmentAsync(id);
 
-            if(department == null) { return NotFound(); }
+            if (department == null) { return NotFound(); }
             return Ok(department);
         }
 
         [HttpPost]
-        [Route("api/departments")]
         public async Task<ActionResult<Department>> AddDeparment([FromBody]Department department)
         {
             if (!ModelState.IsValid)
@@ -55,8 +53,7 @@ namespace EmpoyeeApi.Controllers
 
         }
 
-        [HttpDelete]
-        [Route("api/department/{id}")]
+        [HttpDelete("{id:Int}", Name ="DeleteDepartment")]
         public async Task<ActionResult> DeleteDepartment(int id)
         {
             if(id == 0)
