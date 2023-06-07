@@ -11,6 +11,7 @@ namespace EmpoyeeApi.Interfaces
         Task<Department> GetDepartmentAsync(int id);
         Task<Department> AddDepartmentAsync(Department department);
         Task<Department> DeleteDepartmentAsync(int id);
+        Task AddEmployeeToDepartment(Employee employee);
 
     }
 }

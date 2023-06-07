@@ -4,11 +4,19 @@ using EmpoyeeApi.Models;
 using EmpoyeeApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    //handles object cycles during JSON serialization
+    //An object cycle occurs when there are circular references between objects,
+    // meaning that one object refers to another object,
+    //which in turn refers back to the original object, creating a cycle.
+    .AddJsonOptions(options => {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 
 
 builder.Services.AddEndpointsApiExplorer();

@@ -30,10 +30,32 @@ namespace EmpoyeeApi.Services
 
         public async Task<Department> GetDepartmentAsync(int id)
         {
-            var department = await _context.Departments.FirstOrDefaultAsync(x => x.DepartmentId == id);
+            var department = await _context.Departments
+                .Include(x => x.Employees)
+                .FirstOrDefaultAsync(x => x.DepartmentId == id);
 #pragma warning disable CS8603 // Possible null reference return.
             return department;
 #pragma warning restore CS8603 // Possible null reference return.
+        }
+
+        public async Task AddEmployeeToDepartment(Employee employee)
+        {
+            var department = await GetDepartmentAsync(employee.DepartmentId);
+            if (department == null) { return ; }
+
+            //Create new Employee object
+            var newEmp = new Employee
+            {
+                Name = employee.Name,
+                Email = employee.Email,
+                Phone = employee.Phone,
+                Salary = employee.Salary,
+                DepartmentId = employee.DepartmentId
+            };
+
+            //add new emp to department's list
+            department.Employees.Add(newEmp);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Department> DeleteDepartmentAsync(int id)

@@ -15,12 +15,13 @@ namespace EmpoyeeApi.Models
         [MaxLength(100)]
         public string Email { get; set; }
 
-        public long Phone { get; set; }
+        public string Phone { get; set; }
 
-        public long Salary { get; set; }
+        public decimal Salary { get; set; }
 
 
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
+        public Department Department { get; set; } //navigation property
     }
 }

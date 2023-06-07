@@ -13,9 +13,11 @@ namespace EmpoyeeApi.Controllers
     public class EmployeesContoller : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
-        public EmployeesContoller(IEmployeeService employeeService)
+        private readonly IDepartmentService _departmentService;
+        public EmployeesContoller(IEmployeeService employeeService, IDepartmentService departmentService)
         {
             _employeeService = employeeService;
+            _departmentService = departmentService;
         }
 
         [HttpGet]
@@ -50,17 +52,25 @@ namespace EmpoyeeApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (employee == null)
-            {
-                return BadRequest(employee);
-            }
             if (employee.Id != Guid.Empty)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
+            //add employee to employee table
             await _employeeService.AddEmployeeAsync(employee);
+
+            //add employee to departments table
+            await _departmentService.AddEmployeeToDepartment(employee);
+
+
             return CreatedAtRoute("GetEmployee", new { id = employee.Id }, employee);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<Employee>>DeleteEmployee(Guid id)
+        {
+
         }
 
     }

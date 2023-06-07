@@ -28,7 +28,7 @@ namespace EmpoyeeApi.Services
         public async Task<Employee> AddEmployeeAsync(Employee employee)
         {
             await _context.Employees.AddAsync(employee);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return employee;
         }
     }
