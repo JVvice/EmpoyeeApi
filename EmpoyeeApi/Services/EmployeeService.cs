@@ -25,11 +25,23 @@ namespace EmpoyeeApi.Services
             return employee;
         }
 
-        public async Task<Employee> AddEmployeeAsync(Employee employee)
+        public async Task<Employee>AddEmployeeAsync(Employee employee)
         {
             await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
             return employee;
         }
+
+        public async Task<Employee> DeleteEmployeeAsync(Guid id)
+        {
+            var employee = await _context.Employees.FirstOrDefaultAsync(x => x.Id == id);
+#pragma warning disable CS8603 // Possible null reference return.
+            if (employee == null) return null;
+#pragma warning restore CS8603 // Possible null reference return.
+
+            _context.Employees.Remove(employee);
+            _context.SaveChanges(); return employee;
+        }
+
     }
 }

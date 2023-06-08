@@ -17,7 +17,9 @@ namespace EmpoyeeApi.Services
 
         public async Task<List<Department>> GetDepartmentsAsync()
         {
-            return await _context.Departments.ToListAsync();
+            return await _context.Departments
+                .Include(x => x.Employees)
+                .ToListAsync();
         }
 
         public async Task<Department> AddDepartmentAsync(Department department)
@@ -55,6 +57,20 @@ namespace EmpoyeeApi.Services
 
             //add new emp to department's list
             department.Employees.Add(newEmp);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteEmployeeFromDepartment(Employee employee)
+        {
+            //get department employee belongs to
+            var department = await GetDepartmentAsync(employee.DepartmentId);
+            if (department == null) { return ;}
+
+            //find employee in the department list
+            var DelEmp = department.Employees.FirstOrDefault(x => x.Id == employee.Id);
+
+            //remove employee from department list
+            department.Employees.Remove(DelEmp);
             await _context.SaveChangesAsync();
         }
 

@@ -5,6 +5,8 @@ using EmpoyeeApi.Models;
 using EmpoyeeApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace EmpoyeeApi.Controllers
 {
@@ -68,8 +70,28 @@ namespace EmpoyeeApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<Employee>>DeleteEmployee(Guid id)
+        public async Task<ActionResult>DeleteEmployee(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+            //get employee using id
+            var employee = await _employeeService.GetEmployeeByIdAsync(id);
+            if (employee == null) { return NotFound(); };
+
+            //delete employee from employee table
+            var deletedEmp = await _employeeService.DeleteEmployeeAsync(id);
+
+            if(deletedEmp == null)
+            {
+                return NotFound();
+            }
+
+            // Pass employee object to service to delete employee from department table
+            await _departmentService.DeleteEmployeeFromDepartment(employee);
+
+            return NoContent();
 
         }
 
