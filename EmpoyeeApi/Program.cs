@@ -4,6 +4,7 @@ using EmpoyeeApi.Models;
 using EmpoyeeApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -11,10 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers()
-    .AddJsonOptions(options =>
+    .AddNewtonsoftJson(options =>
     {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-        options.JsonSerializerOptions.WriteIndented = true;
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
     });
 //handles object cycles during JSON serialization
 //An object cycle occurs when there are circular references between objects,
@@ -63,6 +64,8 @@ if (builder.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+
+app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 app.UseStaticFiles();
 
 app.UseRouting();
