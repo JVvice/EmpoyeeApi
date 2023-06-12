@@ -6,7 +6,6 @@ namespace EmpoyeeApi.Models
     public class Employee
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         [MaxLength(100)]

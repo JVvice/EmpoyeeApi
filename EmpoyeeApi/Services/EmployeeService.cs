@@ -27,20 +27,43 @@ namespace EmpoyeeApi.Services
 
         public async Task<Employee>AddEmployeeAsync(Employee employee)
         {
-            await _context.Employees.AddAsync(employee);
+            var department = await _context.Departments.FirstOrDefaultAsync(x => x.DepartmentId == employee.DepartmentId);
+            if (department == null) { return employee; }
+            //Create new Employee object
+            var newEmp = new Employee
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Email = employee.Email,
+                Phone = employee.Phone,
+                Salary = employee.Salary,
+                DepartmentId = employee.DepartmentId,
+                Department = department
+            };
+            await _context.Employees.AddAsync(newEmp);
             await _context.SaveChangesAsync();
             return employee;
         }
 
         public async Task<Employee> DeleteEmployeeAsync(Guid id)
         {
+           
             var employee = await _context.Employees.FirstOrDefaultAsync(x => x.Id == id);
+            var department = await _context.Departments.FirstOrDefaultAsync(x => x.DepartmentId == employee.DepartmentId);
 #pragma warning disable CS8603 // Possible null reference return.
             if (employee == null) return null;
 #pragma warning restore CS8603 // Possible null reference return.
 
+            department.Employees.Remove(employee);
+
             _context.Employees.Remove(employee);
-            _context.SaveChanges(); return employee;
+            await _context.SaveChangesAsync(); return employee;
+        }
+
+        public void UpdateEmployeeAsync(Employee employee)
+        {
+            _context.Employees.Update(employee);
+            _context.SaveChangesAsync();
         }
 
     }

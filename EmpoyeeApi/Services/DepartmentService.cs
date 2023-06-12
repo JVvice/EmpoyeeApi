@@ -47,11 +47,13 @@ namespace EmpoyeeApi.Services
             //Create new Employee object
             var newEmp = new Employee
             {
+                Id = employee.Id,
                 Name = employee.Name,
                 Email = employee.Email,
                 Phone = employee.Phone,
                 Salary = employee.Salary,
-                DepartmentId = employee.DepartmentId
+                DepartmentId = employee.DepartmentId,
+                Department = department
             };
 
             //add new emp to department's list

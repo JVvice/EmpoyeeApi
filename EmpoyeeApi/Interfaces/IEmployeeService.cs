@@ -8,5 +8,6 @@ namespace EmpoyeeApi.Interfaces
         Task<Employee> GetEmployeeByIdAsync(Guid id);
         Task<Employee>AddEmployeeAsync(Employee employee);
         Task<Employee> DeleteEmployeeAsync(Guid id);
+        void UpdateEmployeeAsync(Employee employee);
     }
 }

@@ -15,11 +15,9 @@ namespace EmpoyeeApi.Controllers
     public class EmployeesContoller : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IDepartmentService _departmentService;
-        public EmployeesContoller(IEmployeeService employeeService, IDepartmentService departmentService)
+        public EmployeesContoller(IEmployeeService employeeService)
         {
             _employeeService = employeeService;
-            _departmentService = departmentService;
         }
 
         [HttpGet]
@@ -54,16 +52,17 @@ namespace EmpoyeeApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (employee.Id != Guid.Empty)
+            if(employee.Id == Guid.Empty)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                employee.Id = Guid.NewGuid();
+            }
+            else
+            {
+                employee.Id = Guid.NewGuid();
             }
 
             //add employee to employee table
             await _employeeService.AddEmployeeAsync(employee);
-
-            //add employee to departments table
-            await _departmentService.AddEmployeeToDepartment(employee);
 
 
             return CreatedAtRoute("GetEmployee", new { id = employee.Id }, employee);
@@ -88,10 +87,21 @@ namespace EmpoyeeApi.Controllers
                 return NotFound();
             }
 
-            // Pass employee object to service to delete employee from department table
-            await _departmentService.DeleteEmployeeFromDepartment(employee);
-
             return NoContent();
+
+        }
+
+        [HttpPut("{id:Guid}", Name = "UpdateEmployee")]
+        public IActionResult UpdateEmployee(Guid id, [FromBody]Employee employee)
+        {
+            if(employee == null || id != employee.Id)
+            {
+                return BadRequest();
+            }
+
+            this._employeeService.UpdateEmployeeAsync(employee);
+            return NoContent();
+
 
         }
 
