@@ -63,7 +63,7 @@ namespace EmpoyeeApi.Services
         public void UpdateEmployeeAsync(Employee employee)
         {
             _context.Employees.Update(employee);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
     }
