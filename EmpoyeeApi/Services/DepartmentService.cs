@@ -18,6 +18,7 @@ namespace EmpoyeeApi.Services
         public async Task<List<Department>> GetDepartmentsAsync()
         {
             return await _context.Departments
+                .Include(x => x.Employees)
                 .ToListAsync();
         }
 

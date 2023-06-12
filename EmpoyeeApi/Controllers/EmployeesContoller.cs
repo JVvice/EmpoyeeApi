@@ -68,7 +68,7 @@ namespace EmpoyeeApi.Controllers
             return CreatedAtRoute("GetEmployee", new { id = employee.Id }, employee);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:Guid}", Name = "DeleteEmployee")]
         public async Task<ActionResult>DeleteEmployee(Guid id)
         {
             if (id == Guid.Empty)
