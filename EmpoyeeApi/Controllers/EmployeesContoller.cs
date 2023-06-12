@@ -58,7 +58,7 @@ namespace EmpoyeeApi.Controllers
             }
             else
             {
-                employee.Id = Guid.NewGuid();
+                return BadRequest();
             }
 
             //add employee to employee table
