@@ -1,0 +1,3 @@
+[submodule "UiAngular/empoyee"]
+	path = UiAngular/empoyee
+	url = https://github.com/JVvice/empoyee.git
